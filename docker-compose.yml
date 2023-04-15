@@ -1,0 +1,58 @@
+version: '3.8'
+services:
+  app:
+    container_name: giabao_app
+    image: giabao_image
+    build:
+      context: .
+      target: builder
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    command: yarn start:dev
+
+    restart: always
+    networks:
+      - network
+    ports:
+      - 8000:3000
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SENDGRID_SERVER: ${SENDGRID_SERVER}
+      SENDGRID_USERNAME: ${SENDGRID_USERNAME}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      PORT_POSTGRES_DOCKER: ${PORT_POSTGRES_DOCKER}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_TIME: ${JWT_EXPIRATION_TIME}
+      JWT_REFRESH_TOKEN_SECRET: ${JWT_REFRESH_TOKEN_SECRET}
+      JWT_REFRESH_TOKEN_EXPIRATION_TIME: ${JWT_REFRESH_TOKEN_EXPIRATION_TIME}
+      JWT_VERIFICATION_TOKEN_SECRET: ${JWT_VERIFICATION_TOKEN_SECRET}
+      JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: ${JWT_VERIFICATION_TOKEN_EXPIRATION_TIME}
+  postgres:
+    container_name: giabao_postgres
+    image: postgres:13.2
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgresql
+
+    volumes:
+      - data:/var/lib/postgresql/data
+    ports:
+      - 5555:5432
+    networks:
+      - network
+
+volumes:
+  data:
+
+networks:
+  network:
