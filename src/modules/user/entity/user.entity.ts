@@ -1,9 +1,12 @@
 import { Exclude } from 'class-transformer';
+import { Home } from 'src/modules/home/entity/home.entity';
 import { Room } from 'src/modules/rooms/entity/room.entity';
+import { Statistic } from 'src/modules/statistic/entity/statistic.entity';
 import {
   Column,
   Entity,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -39,7 +42,9 @@ export class User {
   @ManyToMany(() => Room, (room) => room.members)
   rooms: Room[];
 
-  //   @JoinColumn()
-  //   @OneToOne(() => Address)
-  //   address:Address
+  @ManyToOne(() => Home, (home) => home.profile)
+  home: Home;
+
+  @ManyToMany(() => Statistic, (statistic) => statistic.profile)
+  statistic: Statistic;
 }

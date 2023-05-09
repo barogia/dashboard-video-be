@@ -16,6 +16,11 @@ import { RoomsModule } from './modules/rooms/rooms.module';
 import { MessageModule } from './modules/message/message.module';
 import { Room } from './modules/rooms/entity/room.entity';
 import { Message } from './modules/message/entity/message.entity';
+import { CameraModule } from './modules/camera/camera.module';
+import { Warning } from './modules/warning/entity/warning.entity';
+import { Camera } from './modules/camera/entity/camera.entity';
+import { Home } from './modules/home/entity/home.entity';
+import { Statistic } from './modules/statistic/entity/statistic.entity';
 
 @Module({
   imports: [
@@ -33,7 +38,7 @@ import { Message } from './modules/message/entity/message.entity';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         synchronize: true,
-        entities: [User, Room, Message],
+        entities: [User, Room, Message, Warning, Camera, Home, Statistic],
       }),
     }),
     MailModule,
@@ -43,6 +48,7 @@ import { Message } from './modules/message/entity/message.entity';
     AuthenModule,
     RoomsModule,
     MessageModule,
+    CameraModule,
   ],
   controllers: [AppController],
   providers: [
