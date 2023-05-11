@@ -2,7 +2,7 @@ version: '3.8'
 services:
   app:
     container_name: giabao_app
-    image: 737938582190.dkr.ecr.ap-southeast-1.amazonaws.com/be-test-bao:latest
+    image: 737938582190.dkr.ecr.ap-southeast-1.amazonaws.com/dashboard-video:latest
 
     restart: always
     networks:
