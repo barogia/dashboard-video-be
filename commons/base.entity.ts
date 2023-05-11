@@ -15,7 +15,7 @@ export class BaseEntity {
   @CreateDateColumn({ default: `now()`, nullable: true })
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   createdBy: string;
 
   @UpdateDateColumn({

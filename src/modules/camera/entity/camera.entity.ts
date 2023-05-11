@@ -14,22 +14,27 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'camera' })
 export class Camera extends BaseEntity {
   //id == serial
-
-  @Column({ nullable: true })
-  securityLevel: SecurityLevel;
+  @Column()
+  url: string;
 
   @Column()
-  connection: boolean;
+  title: string;
+
+  @Column({ nullable: true, default: SecurityLevel.LOW })
+  securityLevel?: SecurityLevel;
+
+  @Column({ nullable: true, default: false })
+  connection?: boolean;
 
   @ManyToOne(() => Home, (home) => home.camera)
-  home: Home;
+  home?: Home;
 
   @ManyToMany(() => Warning, (warning) => warning.camera)
-  warning: Warning;
+  warning?: Warning;
 
   @ManyToMany(() => Statistic, (statistic) => statistic.camera)
-  statistic: Statistic;
+  statistic?: Statistic;
 }
