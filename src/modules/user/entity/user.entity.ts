@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { Camera } from 'src/modules/camera/entity/camera.entity';
 import { Home } from 'src/modules/home/entity/home.entity';
 import { Room } from 'src/modules/rooms/entity/room.entity';
 import { Statistic } from 'src/modules/statistic/entity/statistic.entity';
@@ -30,7 +31,7 @@ export class User {
   isEmailConfirmed?: boolean;
 
   @Column({ default: false })
-  isRegisteredWithGoogle: boolean;
+  isRegisteredWithGoogle?: boolean;
 
   @Column({ nullable: true })
   stripeCustomerId?: string;
@@ -39,12 +40,17 @@ export class User {
   @Column({ nullable: true })
   refreshToken?: string;
 
-  @ManyToMany(() => Room, (room) => room.members)
+  @ManyToMany(() => Room, (room) => room.members, { nullable: true })
   rooms: Room[];
 
-  @ManyToOne(() => Home, (home) => home.profile)
+  @ManyToOne(() => Home, (home) => home.profile, { nullable: true })
   home: Home;
 
-  @ManyToMany(() => Statistic, (statistic) => statistic.profile)
+  @ManyToMany(() => Statistic, (statistic) => statistic.profile, {
+    nullable: true,
+  })
   statistic: Statistic;
+
+  @OneToMany(() => Camera, (camera) => camera.user, { nullable: true })
+  camera: Camera[];
 }

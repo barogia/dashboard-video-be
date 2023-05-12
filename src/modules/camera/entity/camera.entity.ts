@@ -4,17 +4,19 @@ import { SecurityLevel } from 'src/commons/constants/enum';
 import { Home } from 'src/modules/home/entity/home.entity';
 import { Room } from 'src/modules/rooms/entity/room.entity';
 import { Statistic } from 'src/modules/statistic/entity/statistic.entity';
+import { User } from 'src/modules/user/entity/user.entity';
 import { Warning } from 'src/modules/warning/entity/warning.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity({ name: 'camera' })
+@Entity()
 export class Camera extends BaseEntity {
   //id == serial
   @Column()
@@ -37,4 +39,8 @@ export class Camera extends BaseEntity {
 
   @ManyToMany(() => Statistic, (statistic) => statistic.camera)
   statistic?: Statistic;
+
+  @JoinTable()
+  @ManyToOne(() => User, (user) => user.camera)
+  user: User;
 }

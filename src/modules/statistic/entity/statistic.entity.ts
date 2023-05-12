@@ -19,7 +19,7 @@ export class Statistic extends BaseEntity {
   @ManyToMany(() => Camera, (camera) => camera.statistic)
   camera: Camera;
 
-  @ManyToMany(() => Home, (home) => home.statistic)
+  @ManyToMany(() => Home, (home) => home.statistic, { nullable: true })
   home: Home;
 
   @ManyToMany(() => User, (user) => user.statistic)

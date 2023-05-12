@@ -112,4 +112,12 @@ export class AuthenService {
   async removeRefreshToken(userId: string) {
     return await this.userService.removeRefreshToken(userId);
   }
+
+  async getOneUser(userId: string) {
+    return await this.userService.getUserByOption({
+      where: {
+        id: userId,
+      },
+    });
+  }
 }

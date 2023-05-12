@@ -2,10 +2,12 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  DefaultValuePipe,
   Get,
   HttpCode,
   HttpStatus,
   Logger,
+  Param,
   Post,
   Query,
   Req,
@@ -100,6 +102,19 @@ export class AuthenController {
   @Get('ahihi')
   async ahihi() {
     return await this.userService.getAllUser({});
+  }
+
+  @Get('all')
+  async getAll(
+    @Query('limit', new DefaultValuePipe(10)) limit?: number,
+    @Query('offset', new DefaultValuePipe(0)) offset?: number,
+  ) {
+    return await this.userService.getUsers(limit, offset);
+  }
+
+  @Get('detail/:id')
+  async detailUser(@Param('id') id: string) {
+    return await this.authenService.getOneUser(id);
   }
 }
 

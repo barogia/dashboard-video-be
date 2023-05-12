@@ -78,6 +78,23 @@ export class UserService {
     return await this.userRepository.find(options);
   }
 
+  async getUsers(limit = 10, offset = 0) {
+    try {
+      const users = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+      });
+      const length = await this.userRepository.count();
+
+      return {
+        data: users,
+        length,
+      };
+    } catch (error) {
+      throw new BadRequestException(`Error happened in get users`);
+    }
+  }
+
   async deleteAll() {
     return await this.userRepository.delete({});
   }
