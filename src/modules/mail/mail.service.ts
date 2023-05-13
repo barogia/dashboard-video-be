@@ -294,7 +294,7 @@ export class MailService {
         )}s`,
       });
 
-      const urlConfirmation = `http://localhost:8000/mail/verify-email?token=${token}`;
+      const urlConfirmation = `https://test.tapchitrading.com/mail/verify-email?token=${token}`;
       const text = `Welcome to the application. To confirm the email address, click here: ${urlConfirmation}`;
       const mail: SendGrid.MailDataRequired = {
         from: 'knabao7a7@gmail.com',

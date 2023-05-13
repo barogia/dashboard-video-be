@@ -25,13 +25,15 @@ export class Camera extends BaseEntity {
   @Column()
   title: string;
 
-  @Column({ nullable: true, default: SecurityLevel.LOW })
+  @Column({ nullable: true, default: SecurityLevel.MEDIUM })
   securityLevel?: SecurityLevel;
 
-  @Column({ nullable: true, default: false })
+  @Column({ nullable: true, default: true })
   connection?: boolean;
 
-  @ManyToOne(() => Home, (home) => home.camera)
+  @ManyToOne(() => Home, (home) => home.camera, {
+    cascade: ['insert'],
+  })
   home?: Home;
 
   @ManyToMany(() => Warning, (warning) => warning.camera)

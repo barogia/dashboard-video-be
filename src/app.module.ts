@@ -21,6 +21,7 @@ import { Warning } from './modules/warning/entity/warning.entity';
 import { Camera } from './modules/camera/entity/camera.entity';
 import { Home } from './modules/home/entity/home.entity';
 import { Statistic } from './modules/statistic/entity/statistic.entity';
+import { HomeModule } from './modules/home/home.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { Statistic } from './modules/statistic/entity/statistic.entity';
     RoomsModule,
     MessageModule,
     CameraModule,
+    HomeModule,
   ],
   controllers: [AppController],
   providers: [

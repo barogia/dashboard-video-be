@@ -6,12 +6,14 @@ import { CreateCameraDTO } from './dto';
 import { User } from '../user/entity/user.entity';
 import { UserService } from '../user/user.service';
 import { countOcurrences, sortOcurrences } from 'src/utils/function';
+import { HomeService } from '../home/home.service';
 
 @Injectable()
 export class CameraService {
   constructor(
     @InjectRepository(Camera) private cameraRepository: Repository<Camera>,
     private userService: UserService,
+    private homeService: HomeService,
   ) {}
 
   async createVideo(
@@ -21,13 +23,23 @@ export class CameraService {
     try {
       // extend input with createdBy field
       input.createdBy = user.id;
+
+      // found home
+      const foundHome = await this.homeService.getOne(input.home as string);
+
+      console.log({ foundHome });
+
       const body = {
         ...input,
         user,
+        home: foundHome.data,
       };
+
+      console.log({ body });
       const newVideo = await this.cameraRepository.create(body);
 
-      await this.cameraRepository.save(newVideo);
+      const savedVideo = await this.cameraRepository.save(newVideo);
+      console.log({ savedVideo });
       return newVideo;
     } catch (error) {
       console.log(`Error create video : ${error}`);
@@ -39,7 +51,7 @@ export class CameraService {
       const videos = await this.cameraRepository.find({
         skip: offset,
         take: limit,
-        select: ['user'],
+        relations: ['user', 'home'],
       });
 
       const userRelation = await Promise.all(
@@ -78,6 +90,7 @@ export class CameraService {
         where: {
           id: id,
         },
+        relations: ['user', 'home'],
       });
 
       return {
@@ -88,15 +101,16 @@ export class CameraService {
 
   async createMultilple(inputs: CreateCameraDTO[]) {
     try {
-      const newVideos = await Promise.all(
-        inputs.map((input) => {
-          const video = this.cameraRepository.create(input);
+      // const newVideos = await Promise.all(
+      //   inputs.map((input) => {
+      //     const video = this.cameraRepository.create(input);
 
-          return this.cameraRepository.save(video);
-        }),
-      );
+      //     return this.cameraRepository.save(video);
+      //   }),
+      // );
 
-      return newVideos;
+      // return newVideos;
+      return [];
     } catch (error) {
       console.log(`Error create video : ${error}`);
     }
@@ -135,7 +149,10 @@ export class CameraService {
         };
       }
 
-      await this.cameraRepository.update(foundVideo.id, input);
+      await this.cameraRepository.update(
+        foundVideo.id,
+        input as Partial<Camera>,
+      );
 
       return {
         data: true,
@@ -237,6 +254,33 @@ export class CameraService {
       const totalVideo = await this.cameraRepository.count({
         where: {
           createdBy: user.id,
+        },
+      });
+
+      return {
+        data: videos,
+        length: totalVideo,
+      };
+    } catch (error) {}
+  }
+
+  async getVideosByHome(id: string, limit = 10, offset = 0) {
+    try {
+      const videos = await this.cameraRepository.find({
+        skip: offset,
+        take: limit,
+        where: {
+          home: {
+            id,
+          },
+        },
+      });
+
+      const totalVideo = await this.cameraRepository.count({
+        where: {
+          home: {
+            id,
+          },
         },
       });
 

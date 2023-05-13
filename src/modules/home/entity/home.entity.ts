@@ -8,6 +8,7 @@ import { Warning } from 'src/modules/warning/entity/warning.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -15,16 +16,22 @@ import {
 
 @Entity()
 export class Home extends BaseEntity {
-  @Column({ default: false })
+  @Column({ default: true })
   activate: boolean;
 
+  @Column()
+  name: string;
+
   @OneToMany(() => User, (user) => user.home)
+  @JoinTable()
   profile: User;
 
   @OneToMany(() => Camera, (camera) => camera.home)
+  @JoinTable()
   camera: Camera;
 
   @ManyToMany(() => Warning, (warning) => warning.home)
+  @JoinTable()
   warning: Warning;
 
   @ManyToMany(() => Statistic, (statistic) => statistic.home)
