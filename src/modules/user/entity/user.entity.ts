@@ -3,6 +3,7 @@ import { Camera } from 'src/modules/camera/entity/camera.entity';
 import { Home } from 'src/modules/home/entity/home.entity';
 import { Room } from 'src/modules/rooms/entity/room.entity';
 import { Statistic } from 'src/modules/statistic/entity/statistic.entity';
+import { Warning } from 'src/modules/warning/entity/warning.entity';
 import {
   Column,
   Entity,
@@ -53,4 +54,7 @@ export class User {
 
   @OneToMany(() => Camera, (camera) => camera.user, { nullable: true })
   camera: Camera[];
+
+  @OneToMany(() => Warning, (warning) => warning.user, { nullable: true })
+  warning: Warning[];
 }

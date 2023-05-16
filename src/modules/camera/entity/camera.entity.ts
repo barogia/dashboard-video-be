@@ -36,7 +36,7 @@ export class Camera extends BaseEntity {
   })
   home?: Home;
 
-  @ManyToMany(() => Warning, (warning) => warning.camera)
+  @OneToMany(() => Warning, (warning) => warning.camera)
   warning?: Warning;
 
   @ManyToMany(() => Statistic, (statistic) => statistic.camera)

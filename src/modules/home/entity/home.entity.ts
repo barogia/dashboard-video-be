@@ -23,15 +23,14 @@ export class Home extends BaseEntity {
   name: string;
 
   @OneToMany(() => User, (user) => user.home)
-  @JoinTable()
+  // @JoinTable()
   profile: User;
 
   @OneToMany(() => Camera, (camera) => camera.home)
-  @JoinTable()
+  // @JoinTable()
   camera: Camera;
 
-  @ManyToMany(() => Warning, (warning) => warning.home)
-  @JoinTable()
+  @OneToMany(() => Warning, (warning) => warning.home)
   warning: Warning;
 
   @ManyToMany(() => Statistic, (statistic) => statistic.home)
