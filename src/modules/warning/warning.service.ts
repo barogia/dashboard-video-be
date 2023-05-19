@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Warning } from './entity/warning.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { ICreateWarningDto } from './dto/warning.dto';
 import { User } from '../user/entity/user.entity';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
+import { sortOcurrences } from 'src/utils/function';
+import { countOcurrences } from 'src/utils/function';
 
 @Injectable()
 export class WarningService {
@@ -95,6 +97,41 @@ export class WarningService {
       };
     } catch (error) {
       console.log(`Error in deleting warning ${error}`);
+    }
+  }
+
+  async getWarningsByTime(areaId: string, time = 5) {
+    // co khu vuc id => get toan bo warnings => count soluong warning theo thang
+    try {
+      const nextMonth = +time + 1;
+      const from = `2023-0${time}-01T00:00:00.000Z`;
+      const end = `2023-0${nextMonth}-01T00:00:00.000Z`;
+
+      // get all warnings by month
+      const warnings = await this.warningRepository.find({
+        where: {
+          home: {
+            id: areaId,
+          },
+          createdAt: Between(new Date(from), new Date(end)),
+        },
+        relations: ['camera', 'home'],
+      });
+
+      // count how many warning by date
+      const countCameraByDay = sortOcurrences(
+        countOcurrences(
+          warnings.map((video) =>
+            new Date(video.createdAt).getDate().toString(),
+          ),
+        ),
+      );
+
+      return {
+        data: countCameraByDay,
+      };
+    } catch (error) {
+      console.log(`Error in getting cameras by warning id ${error}`);
     }
   }
 }

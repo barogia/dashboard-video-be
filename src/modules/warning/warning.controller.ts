@@ -50,4 +50,12 @@ export class WarningController {
   async deleteWarningById(@Param('id') id: string) {
     return await this.warningService.deleteWarning(id);
   }
+
+  @Get('chart/:id')
+  async getCamerasByWarningId(
+    @Param('id') id: string,
+    @Query('time') time?: number,
+  ) {
+    return await this.warningService.getWarningsByTime(id, time);
+  }
 }

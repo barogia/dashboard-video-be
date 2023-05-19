@@ -27,8 +27,6 @@ export class CameraService {
       // found home
       const foundHome = await this.homeService.getOne(input.home as string);
 
-      console.log({ foundHome });
-
       const body = {
         ...input,
         user,
